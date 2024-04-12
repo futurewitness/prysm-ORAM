@@ -1,5 +1,10 @@
 package lightclient
 
+/*
+#include "header.hpp"
+*/
+import "C"
+
 import (
 	"bytes"
 	"context"
@@ -27,10 +32,15 @@ import (
 	"github.com/prysmaticlabs/prysm/v5/testing/util"
 )
 
+func TestLightClientHandler_RunCCode(t *testing.T) {
+	require.Equal(t, 3, int(C.add_two(1, 2)))
+}
+
 func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {
 	helpers.ClearCache()
 	slot := primitives.Slot(params.BeaconConfig().AltairForkEpoch * primitives.Epoch(params.BeaconConfig().SlotsPerEpoch)).Add(1)
 
+	fmt.Printf("THIS IS A PRINT STATEMENT!!!!\n")
 	b := util.NewBeaconBlockCapella()
 	b.Block.StateRoot = bytesutil.PadTo([]byte("foo"), 32)
 	b.Block.Slot = slot

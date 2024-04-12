@@ -7,6 +7,9 @@ go_library(
         "helpers.go",
         "server.go",
     ],
+    cgo=True,
+    cdeps=["//beacon-chain/rpc/eth/c_code:foo"],
+    copts = ["-Ibeacon-chain/rpc/eth/c_code"],
     importpath = "github.com/prysmaticlabs/prysm/v5/beacon-chain/rpc/eth/light-client",
     visibility = ["//beacon-chain:__subpackages__"],
     deps = [

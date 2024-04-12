@@ -1,0 +1,10 @@
+load("@prysm//tools/go:def.bzl", "go_library", "go_test")
+
+cc_library(
+    name = "foo",
+    srcs = [
+        "source.cpp",
+    ],
+    hdrs = ["header.hpp"],
+    visibility = ["//beacon-chain:__subpackages__"],
+)

@@ -28,6 +28,7 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 	ctx, span := trace.StartSpan(req.Context(), "beacon.GetLightClientBootstrap")
 	defer span.End()
 
+	fmt.Printf("WE ARE IN HANDLER\n")
 	// Get the block
 	blockRootParam, err := hexutil.Decode(mux.Vars(req)["block_root"])
 	if err != nil {
