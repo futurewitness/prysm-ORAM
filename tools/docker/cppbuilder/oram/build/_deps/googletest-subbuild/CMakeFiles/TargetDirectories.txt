@@ -1,0 +1,3 @@
+/builder/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
+/builder/build/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
+/builder/build/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir
