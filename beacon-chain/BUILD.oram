@@ -1,0 +1,9 @@
+load("@prysm//tools/go:def.bzl", "cc_import")
+
+cc_import(
+	name = "odsl",
+	hdrs = glob(["**.h"]),
+	shared_library = "//applications/goexample/odsl/go/libodsl.so"
+	visibility = ["//visibility:public"],
+)
+

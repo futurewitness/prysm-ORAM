@@ -8,3 +8,4 @@ cc_library(
     hdrs = ["header.hpp"],
     visibility = ["//beacon-chain:__subpackages__"],
 )
+

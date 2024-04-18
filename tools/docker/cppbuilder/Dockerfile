@@ -10,7 +10,7 @@ RUN echo 'deb [arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu jam
 RUN wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | apt-key add -
 
 RUN apt update -y && apt upgrade -y \
-&& apt install -y build-essential lld make git wget unzip cmake ninja-build gdb \
+&& apt install -y build-essential lld make vim git wget unzip cmake ninja-build gdb \
         ocaml ocamlbuild automake autoconf libtool wget python-is-python3 libssl-dev git cmake perl \
         python3 python3-pip lcov gcovr cppcheck \
 && apt install -y clang clang-13 libc++-13-dev libc++abi-13-dev clang-format clang-format-13 \
@@ -71,6 +71,9 @@ RUN cd /dockerfiles && wget https://download.01.org/intel-sgx/latest/linux-lates
 RUN echo "source /dockerfiles/sgxsdk/environment" > /startsgxenv.sh
 RUN chmod +x /startsgxenv.sh
 
+### ADD oram folder
+ADD oram/ /oram/
+
 # Installing rocksdb takes a long time, uncomment to run the balance checker example
 # COPY rocksDBInstall.sh /rocksDBInstall.sh
 # RUN chmod +x /rocksDBInstall.sh && \
@@ -81,6 +84,7 @@ RUN ln -s /usr/lib/libsgx_urts.so /usr/lib/libsgx_urts.so.2
 
 
 RUN useradd -m xorchpirates
-USER xorchpirates
+USER xorchpirates 
+
 WORKDIR /builder/beacon-chain/rpc/eth/light-client/
 CMD ["bash"]

@@ -1,6 +1,7 @@
 package lightclient
 
 /*
+#include "stdbool.h"
 #include "header.hpp"
 */
 import "C"
@@ -34,6 +35,18 @@ import (
 
 func TestLightClientHandler_RunCCode(t *testing.T) {
 	require.Equal(t, 3, int(C.add_two(1, 2)))
+}
+
+func TestLightClientHandler_RunORAM(t *testing.T) {
+	fmt.Printf("Running ORAM TEST\n")
+	var omap OMapBindingSingleton
+	omap = NewOMapBindingSingleton()
+	omap.InitEmpty(1000)
+	omap.Insert(1, 2)
+	var findRes uint64
+	foundFlag := omap.Find(1, &findRes)
+	require.Equal(t, true, foundFlag)
+	require.Equal(t, uint64(2), findRes)
 }
 
 func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {

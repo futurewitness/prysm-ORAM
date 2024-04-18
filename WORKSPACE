@@ -3,6 +3,18 @@ workspace(name = "prysm")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
+new_local_repository(
+	name="oram",
+	path="/oram",
+	build_file="oram.BUILD",
+)
+
+new_local_repository(
+	name="include",
+	path="/usr",
+	build_file="include.BUILD",
+)
+
 http_archive(
     name = "rules_pkg",
     sha256 = "8c20f74bca25d2d442b327ae26768c02cf3c99e93fad0381f32be9aab1967675",
