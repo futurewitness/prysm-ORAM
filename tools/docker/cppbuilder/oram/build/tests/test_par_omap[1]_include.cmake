@@ -1,0 +1,5 @@
+if(EXISTS "/builder/build/tests/test_par_omap[1]_tests.cmake")
+  include("/builder/build/tests/test_par_omap[1]_tests.cmake")
+else()
+  add_test(test_par_omap_NOT_BUILT test_par_omap_NOT_BUILT)
+endif()
