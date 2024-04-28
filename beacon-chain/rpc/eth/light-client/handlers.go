@@ -37,7 +37,11 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 	}
 
 	blockRoot := bytesutil.ToBytes32(blockRootParam)
+
 	blk, err := s.Blocker.Block(ctx, blockRoot[:])
+
+	fmt.Printf("After blocker %p %v\n", blk, err)
+
 	if !shared.WriteBlockFetchError(w, blk, err) {
 		return
 	}
@@ -61,6 +65,7 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 	}
 
 	httputil.WriteJson(w, response)
+
 }
 
 // GetLightClientUpdatesByRange - implements https://github.com/ethereum/beacon-APIs/blob/263f4ed6c263c967f13279c7a9f5629b51c5fc55/apis/beacon/light_client/updates.yaml

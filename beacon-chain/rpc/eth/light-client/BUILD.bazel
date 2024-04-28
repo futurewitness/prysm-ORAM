@@ -4,9 +4,10 @@ go_library(
     name = "go_default_library",
     srcs = [
         "handlers.go",
-	"odsl.go",
+	    "odsl.go",
         "helpers.go",
         "server.go",
+        "oram_blocker.go",
     ],
     cgo=True,
     cdeps=["//beacon-chain/rpc/eth/c_code:foo","@include//:bearssl","@oram//:odsl"],
@@ -20,7 +21,9 @@ go_library(
         "//api/server/structs:go_default_library",
         "//beacon-chain/blockchain:go_default_library",
         "//beacon-chain/rpc/eth/shared:go_default_library",
+        "//beacon-chain/rpc/core:go_default_library",
         "//beacon-chain/rpc/lookup:go_default_library",
+        "//consensus-types/blocks:go_default_library",
         "//beacon-chain/state:go_default_library",
         "//config/fieldparams:go_default_library",
         "//config/params:go_default_library",
@@ -36,6 +39,7 @@ go_library(
         "@com_github_gorilla_mux//:go_default_library",
         "@com_github_wealdtech_go_bytesutil//:go_default_library",
         "@io_opencensus_go//trace:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
     ],
 )
 

@@ -76,13 +76,18 @@ func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {
 	require.NoError(t, bs.SetSlot(slot))
 	require.NoError(t, bs.SetLatestBlockHeader(header.Header))
 
-	mockBlocker := &testutil.MockBlocker{BlockToReturn: signedBlock}
+	//mockBlocker := &testutil.MockBlocker{BlockToReturn: signedBlock}
+
+	// ORAM REPLACEMENT
+	oramBlocker := NewOramDB()
+	oramBlocker.Init(1000)
+
 	mockChainService := &mock.ChainService{Optimistic: true, Slot: &slot}
 	s := &Server{
 		Stater: &testutil.MockStater{StatesBySlot: map[primitives.Slot]state.BeaconState{
 			slot: bs,
 		}},
-		Blocker:     mockBlocker,
+		Blocker:     oramBlocker,
 		HeadFetcher: mockChainService,
 	}
 	muxVars := make(map[string]string)
