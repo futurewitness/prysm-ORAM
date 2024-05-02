@@ -28,7 +28,7 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 	ctx, span := trace.StartSpan(req.Context(), "beacon.GetLightClientBootstrap")
 	defer span.End()
 
-	fmt.Printf("WE ARE IN HANDLER\n")
+	fmt.Printf("!!! We are in handlers.go::GetLightClientBootstrap() !!!\n")
 	// Get the block
 	blockRootParam, err := hexutil.Decode(mux.Vars(req)["block_root"])
 	if err != nil {
@@ -43,8 +43,11 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 	fmt.Printf("After blocker %p %v\n", blk, err)
 
 	if !shared.WriteBlockFetchError(w, blk, err) {
+		fmt.Printf("we failed here \n")
 		return
 	}
+
+	fmt.Printf("hello 1\n")
 
 	// Get the state
 	state, err := s.Stater.StateBySlot(ctx, blk.Block().Slot())
@@ -53,11 +56,15 @@ func (s *Server) GetLightClientBootstrap(w http.ResponseWriter, req *http.Reques
 		return
 	}
 
+	fmt.Printf("hello 2\n")
+
 	bootstrap, err := createLightClientBootstrap(ctx, state)
 	if err != nil {
 		httputil.HandleError(w, "could not get light client bootstrap: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	fmt.Printf("hello 3\n")
 
 	response := &structs.LightClientBootstrapResponse{
 		Version: version.String(blk.Version()),

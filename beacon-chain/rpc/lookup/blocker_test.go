@@ -25,6 +25,7 @@ import (
 )
 
 func TestGetBlock(t *testing.T) {
+	fmt.Printf("---- RUNNING TESTGETBLOCK")
 	beaconDB := testDB.SetupDB(t)
 	ctx := context.Background()
 
@@ -135,8 +136,27 @@ func TestGetBlock(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		fmt.Printf("Testing... [name = %s]: \n", tt.name)
 		t.Run(tt.name, func(t *testing.T) {
+
 			result, err := fetcher.Block(ctx, tt.blockID)
+
+			if tt.name == "slot" || tt.name == "hex"{
+				var totalDuration time.Duration
+				for i := 0; i < int(10); i++ {
+					startTime := time.Now()
+					result, err = fetcher.Block(ctx, tt.blockID)
+					endTime := time.Now()
+					duration := endTime.Sub(startTime)
+					totalDuration += duration
+
+					fmt.Println("\t\t\ttime elapsed - ", duration)
+					// fmt.Println("\t\t\tresult size  - ", unsafe.Sizeof(result))
+				}
+				fmt.Println("\t\t[BOLTDB] avg time elapsed - ", totalDuration / 10)
+			} 
+
+
 			if tt.wantErr {
 				assert.NotEqual(t, err, nil, "no error has been returned")
 				return
@@ -147,12 +167,14 @@ func TestGetBlock(t *testing.T) {
 			}
 			require.NoError(t, err)
 			pbBlock, err := result.PbPhase0Block()
+			// fmt.Println("\t\t\tpbBlock size  - ", unsafe.Sizeof(pbBlock))
 			require.NoError(t, err)
 			if !reflect.DeepEqual(pbBlock, tt.want) {
 				t.Error("Expected blocks to equal")
 			}
 		})
 	}
+	fmt.Printf("---- DONE RUNNING TESTGETBLOCK")
 }
 
 func TestGetBlob(t *testing.T) {

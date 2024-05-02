@@ -49,11 +49,11 @@ func TestLightClientHandler_RunORAM(t *testing.T) {
 	require.Equal(t, uint64(2), findRes)
 }
 
-func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {
+func TestLightClientHandler_GetLightClientBootstrapOMAP(t *testing.T) {
 	helpers.ClearCache()
 	slot := primitives.Slot(params.BeaconConfig().AltairForkEpoch * primitives.Epoch(params.BeaconConfig().SlotsPerEpoch)).Add(1)
 
-	fmt.Printf("THIS IS A PRINT STATEMENT!!!!\n")
+	fmt.Printf("----- RUNNING ORAM DB TEST!\n")
 	b := util.NewBeaconBlockCapella()
 	b.Block.StateRoot = bytesutil.PadTo([]byte("foo"), 32)
 	b.Block.Slot = slot
@@ -80,7 +80,7 @@ func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {
 
 	// ORAM REPLACEMENT
 	oramBlocker := NewOramDB()
-	oramBlocker.Init(1000)
+	oramBlocker.Init(10000000)
 
 	mockChainService := &mock.ChainService{Optimistic: true, Slot: &slot}
 	s := &Server{
@@ -104,6 +104,8 @@ func TestLightClientHandler_GetLightClientBootstrap(t *testing.T) {
 	require.Equal(t, "capella", resp.Version)
 	require.Equal(t, hexutil.Encode(header.Header.BodyRoot), resp.Data.Header.BodyRoot)
 	require.NotNil(t, resp.Data)
+
+	fmt.Printf("----- FINISHED ORAM DB TEST!\n")
 }
 
 func TestLightClientHandler_GetLightClientUpdatesByRange(t *testing.T) {

@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/binary"
 	"fmt"
+	"time"
 	"unsafe"
 
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/rpc/core"
@@ -48,7 +49,10 @@ func NewOramDB() *OramDB {
 func (oram_db *OramDB) Init(db_size uint) {
 	oram_db.Database = NewOMapBindingSingleton()
 	oram_db.Database.InitEmpty(db_size)
-	oram_db.Database.Insert(1, 2)
+
+	for i := 0; i < int(db_size); i++ {
+        oram_db.Database.Insert(uint64(i), 2)
+    }	
 }
 
 func (oram_db *OramDB) Insert(key, val uint64) {
@@ -84,9 +88,22 @@ func (oram_db *OramDB) Block(ctx context.Context, id []byte) (interfaces.ReadOnl
 	}
 
 	fmt.Printf("Converted key: %v\n", converted)
+	fmt.Printf("id string: %s\n", string(id))
 
 	dummyBlock, err := makeDummyBlock()
-	foundFlag := oram_db.Database.Find(0, findRes)
+
+	foundFlag := true
+	var totalDuration time.Duration
+	for i := 0; i < int(10); i++ {
+        startTime := time.Now()
+		foundFlag = oram_db.Database.Find(uint64(i), findRes)
+		endTime := time.Now()
+		duration := endTime.Sub(startTime)
+		totalDuration += duration
+		fmt.Println("\t\t[OMAP] time elapsed - ", duration)
+    }
+	fmt.Println("\t\t[OMAP] avg time elapsed - ", totalDuration / 10)
+
 
 	if !foundFlag {
 		fmt.Printf("\n\nERROR: Couldn't find block\n\n")
