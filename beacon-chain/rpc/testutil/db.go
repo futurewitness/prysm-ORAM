@@ -23,7 +23,7 @@ func FillDBWithBlocks(ctx context.Context, t *testing.T, beaconDB db.Database) (
 	util.SaveBlock(t, ctx, beaconDB, genBlk)
 	require.NoError(t, beaconDB.SaveGenesisBlockRoot(ctx, root))
 
-	count := primitives.Slot(500000)
+	count := primitives.Slot(1000)
 	blks := make([]interfaces.ReadOnlySignedBeaconBlock, count)
 	blkContainers := make([]*ethpbalpha.BeaconBlockContainer, count)
 	for i := primitives.Slot(0); i < count; i++ {

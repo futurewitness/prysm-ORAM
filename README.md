@@ -35,3 +35,32 @@ Want to get involved? Check out our [Contribution Guide](https://docs.prylabs.ne
 ## Legal Disclaimer
 
 [Terms of Use](/TERMS_OF_SERVICE.md)
+
+## How to Run Prysm-OMAP Tests - (William and Trevor)
+
+First, build the Docker image:
+```bash
+sudo docker build -t cppbuilder:latest ./tools/docker/cppbuilder
+```
+
+Run the Docker image:
+```bash
+sudo docker run -it --rm -v $PWD:/builder -u root cppbuilder
+```
+
+Inside the docker image, you should be in the `/builder/beacon-chain/rpc/eth/light-client/` directory.
+From this directory, use the following commands to run the 'TestLightClientHandler_GetLightClientBootstrapOMAP' test, which measures the time it takes for the light client to look up an element from an OMAP database.
+
+```bash
+bash build_stuff.sh
+bazel test :go_default_test --test_output=all
+```
+(To edit the database size for this test, edit `/prysm-ORAM/beacon-chain/rpc/eth/light-client/handlers_test.go`, line 83.)
+
+To run the test which measures the time it takes for the light client to look up an element from the BoltDB database as in the original Prysm implementation, run the following commands. 
+
+```bash
+cd ../../lookup
+bazel test :go_default_test --test_output=all
+```
+(To edit the database size for this test, edit `/prysm-ORAM/beacon-chain/rpc/testutil/db.go`, line 26.)

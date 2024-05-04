@@ -80,7 +80,7 @@ func TestLightClientHandler_GetLightClientBootstrapOMAP(t *testing.T) {
 
 	// ORAM REPLACEMENT
 	oramBlocker := NewOramDB()
-	oramBlocker.Init(10000000)
+	oramBlocker.Init(1000)
 
 	mockChainService := &mock.ChainService{Optimistic: true, Slot: &slot}
 	s := &Server{
